@@ -8,7 +8,6 @@ public class ChessGame
 	public static void main(String[] args)
 	{
 		FileInputReader fileReader = new FileInputReader();
-		Board board = new Board();
 		
 		try
 		{
@@ -22,7 +21,5 @@ public class ChessGame
 		{
 			System.out.println("Incorrect arguement! Please input a proper arguement!");
 		}
-				
-		board.printBoard();
 	}
 }

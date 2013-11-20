@@ -5,7 +5,7 @@ public class Square
 	private Piece piece;
 	private int piecePositionX;
 	private int piecePositionY;
-
+	
 	public Square(Piece piece, int x, int y)
 	{
 		this.piece = piece;

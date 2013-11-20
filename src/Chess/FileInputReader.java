@@ -13,35 +13,10 @@ public class FileInputReader
 	private final Pattern PIECE_PLACE_FINDER = Pattern.compile("[\\w]{2}(?<position>[A-Ha-h][1-8])");
 	private final Pattern PIECE_MOVEMENT_CAPTURING = Pattern.compile("(?<startingPosition>[A-Ha-h][1-8]) (?<capturePosition>[A-Ha-h][1-8])(\\*)");
 	private final Pattern PIECE_PLACING_VERIFIER = Pattern.compile("(?<pieceType>[KkQqBbNnRrPp])(?<pieceColor>[LlDd])(?<columnPosition>[A-Ha-h])(?<rowPosition>[1-8])");
-	private final Pattern PIECE_MOVEMENT_VERIFIER = Pattern.compile("(?<startingPosition>[A-Ha-h][1-8]) (?<endPosition>[A-Ha-h][1-8])");
+//	private final Pattern PIECE_MOVEMENT_VERIFIER = Pattern.compile("(?<startingPosition>[A-Ha-h][1-8]) (?<endPosition>[A-Ha-h][1-8])");
+	private final Pattern PIECE_MOVEMENT_VERIFIER = Pattern.compile("(?<startingColumn>[A-Ha-h])(?<startingRow>[1-8]) (?<endColumn>[A-Ha-h])(?<endRow>[1-8])");
 	
-//	private static int boardWidth = 8;
-//	private static int boardHeight = 8;
-//	private Square[][] boardSquares = new Square[boardWidth][boardHeight];
-//	private Board board = new Board();
-//	
-//	private void boardSquaresFiller()
-//	{
-//		for(int i = 0; i < boardHeight; i++)
-//		{
-//			for(int k = 0; k < boardWidth; k++)
-//			{
-//				boardSquares[i][k] = new Square("-", i, k);
-//			}
-//		}
-//	}
-//
-//	public void getBoardSquares()
-//	{		
-//		for(int i = 0; i < boardHeight; i++)
-//		{
-//			System.out.println();
-//			for(int k = 0; k < boardWidth; k++)
-//			{
-//				System.out.print(boardSquares[i][k].getPieceName());
-//			}
-//		}
-//	}
+	private Board board = new Board();
 	
 	public void readFile(String file)
 	{	
@@ -78,10 +53,7 @@ public class FileInputReader
 				
 				piece = pieceType(line);					
 				color = pieceColor(line);
-				placement = piecePosition(line);
-				
-				int column = 0;
-				int row = 0;				
+				placement = piecePosition(line);			
 					
 				if(placeVerifier.matches())
 				{
@@ -90,23 +62,34 @@ public class FileInputReader
 					placePiece(piece, color, placement, line);
 					
 					char columnLetter = placeVerifier.group("columnPosition").charAt(0);
-					char rowLetter = placeVerifier.group("rowPosition").charAt(0);
+					char rowNumber = placeVerifier.group("rowPosition").charAt(0);
 					
-					column = columnLetter - 'a';
-					row = rowLetter - '1';
-						
+					int column = columnLetter - 'a';
+					int row = rowNumber - '1';
+					
 					pieceType = (color == "White") ? pieceType.toLowerCase() : pieceType.toUpperCase();
 					
-					Piece newPiece = new Piece(pieceType, column, row);
-					Square square = new Square(newPiece, column, row);
-					square.setPiece(newPiece);
-//					Square square = new Square(pieceType, row, column);
-//					boardSquares[column][row] = square;
-//					board.processSquaresForBoard(square);
+					Piece newPiece= new Piece();
+					
+					newPiece.setPieceType(pieceType);
+					
+					board.addPieceToBoard(newPiece, column, row);
 				}					
 				else if(movementVerifier.matches())
 				{
 					movePiece(line);
+					
+					char startingColumnLetter = movementVerifier.group("startingColumn").charAt(0);
+					char startingRowNumber = movementVerifier.group("startingRow").charAt(0);
+					char endColumnLetter = movementVerifier.group("endColumn").charAt(0);
+					char endRowNumber = movementVerifier.group("endRow").charAt(0);
+					
+					int startingColumn = startingColumnLetter - 'a';
+					int startingRow = startingRowNumber - '1';
+					int endColumn = endColumnLetter - 'a';
+					int endRow = endRowNumber - '1';
+					
+					board.movePieceOnBoard(startingColumn, startingRow, endColumn, endRow);
 				}
 				else if(movementCapture.matches())
 				{
@@ -121,6 +104,8 @@ public class FileInputReader
 					System.out.println(line + " is an incorrect input!  Please revise it!");
 				}
 			}
+			
+			board.printBoard();
 		} 
 		catch (IOException e) 
 		{
@@ -230,7 +215,8 @@ public class FileInputReader
 		
 		if(movementVerifier.matches())
 		{
-			System.out.println("The piece at " + movementVerifier.group("startingPosition") + " has moved to " + movementVerifier.group("endPosition"));
+//			System.out.println("The piece at " + movementVerifier.group("startingPosition") + " has moved to " + movementVerifier.group("endPosition"));
+			System.out.println("The piece at " + movementVerifier.group("startingColumn") + movementVerifier.group("startingRow") + " has moved to " + movementVerifier.group("endColumn") + movementVerifier.group("endRow"));
 		}
 	}
 	
