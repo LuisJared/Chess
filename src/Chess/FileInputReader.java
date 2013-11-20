@@ -13,7 +13,6 @@ public class FileInputReader
 	private final Pattern PIECE_PLACE_FINDER = Pattern.compile("[\\w]{2}(?<position>[A-Ha-h][1-8])");
 	private final Pattern PIECE_MOVEMENT_CAPTURING = Pattern.compile("(?<startingPosition>[A-Ha-h][1-8]) (?<capturePosition>[A-Ha-h][1-8])(\\*)");
 	private final Pattern PIECE_PLACING_VERIFIER = Pattern.compile("(?<pieceType>[KkQqBbNnRrPp])(?<pieceColor>[LlDd])(?<columnPosition>[A-Ha-h])(?<rowPosition>[1-8])");
-//	private final Pattern PIECE_MOVEMENT_VERIFIER = Pattern.compile("(?<startingPosition>[A-Ha-h][1-8]) (?<endPosition>[A-Ha-h][1-8])");
 	private final Pattern PIECE_MOVEMENT_VERIFIER = Pattern.compile("(?<startingColumn>[A-Ha-h])(?<startingRow>[1-8]) (?<endColumn>[A-Ha-h])(?<endRow>[1-8])");
 	
 	private Board board = new Board();
@@ -69,7 +68,7 @@ public class FileInputReader
 					
 					pieceType = (color == "White") ? pieceType.toLowerCase() : pieceType.toUpperCase();
 					
-					Piece newPiece= new Piece();
+					Piece newPiece = new Piece();
 					
 					newPiece.setPieceType(pieceType);
 					
@@ -103,8 +102,7 @@ public class FileInputReader
 				{
 					System.out.println(line + " is an incorrect input!  Please revise it!");
 				}
-			}
-			
+			}			
 			board.printBoard();
 		} 
 		catch (IOException e) 
@@ -215,7 +213,6 @@ public class FileInputReader
 		
 		if(movementVerifier.matches())
 		{
-//			System.out.println("The piece at " + movementVerifier.group("startingPosition") + " has moved to " + movementVerifier.group("endPosition"));
 			System.out.println("The piece at " + movementVerifier.group("startingColumn") + movementVerifier.group("startingRow") + " has moved to " + movementVerifier.group("endColumn") + movementVerifier.group("endRow"));
 		}
 	}

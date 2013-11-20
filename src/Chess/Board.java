@@ -42,7 +42,7 @@ public class Board
 			
 			for(int k = 0; k < boardWidth; k++)
 			{
-				System.out.print(chessBoard[k][i].getPiece().getPieceType());
+				System.out.print("[ " + chessBoard[k][i].getPiece().getPieceType() + " ]");
 			}
 		}
 	}

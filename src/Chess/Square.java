@@ -22,7 +22,7 @@ public class Square
 		this.piece = piece;
 	}
 	
-	public int getPiecePositionX() 
+	public int getPiecePositionX()
 	{
 		return piecePositionX;
 	}	
